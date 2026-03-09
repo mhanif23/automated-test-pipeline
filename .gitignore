@@ -6,6 +6,11 @@ test-results/
 playwright-report/
 blob-report/
 
+# Jest test results & reports
+coverage/
+jest_html_reporters.html
+jest-html-reporters-attach/
+
 # Environment files
 .env
 .env.local

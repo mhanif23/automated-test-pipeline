@@ -32,88 +32,86 @@ hotfix/*    ← Critical fixes langsung dari main
 
 ### 🚀 Mulai Feature Baru
 
-```powershell
-$git = "C:\Program Files\Git\bin\git.exe"
-
+```bash
 # 1. Pastikan develop up-to-date
-& $git checkout develop
-& $git pull origin develop   # (jika ada remote)
+git checkout develop
+git pull origin develop   # (jika ada remote)
 
 # 2. Buat branch feature dari develop
-& $git checkout -b feature/nama-fitur develop
+git checkout -b feature/nama-fitur develop
 
 # 3. Kerjakan perubahan, lalu commit
-& $git add .
-& $git commit -m "feat: deskripsi fitur"
+git add .
+git commit -m "feat: deskripsi fitur"
 
 # 4. Selesai → merge ke develop
-& $git checkout develop
-& $git merge --no-ff feature/nama-fitur -m "Merge feature/nama-fitur into develop"
-& $git branch -d feature/nama-fitur
+git checkout develop
+git merge --no-ff feature/nama-fitur -m "Merge feature/nama-fitur into develop"
+git branch -d feature/nama-fitur
 ```
 
 ---
 
 ### 🐛 Fix Bug di Develop
 
-```powershell
-& $git checkout -b bugfix/nama-bug develop
+```bash
+git checkout -b bugfix/nama-bug develop
 
 # ... fix & commit ...
 
-& $git checkout develop
-& $git merge --no-ff bugfix/nama-bug -m "Merge bugfix/nama-bug into develop"
-& $git branch -d bugfix/nama-bug
+git checkout develop
+git merge --no-ff bugfix/nama-bug -m "Merge bugfix/nama-bug into develop"
+git branch -d bugfix/nama-bug
 ```
 
 ---
 
 ### 📦 Membuat Release
 
-```powershell
+```bash
 # 1. Buat branch release dari develop
-& $git checkout -b release/v1.0.0 develop
+git checkout -b release/v1.0.0 develop
 
 # 2. Update versi, changelog, dll.
 # ... bump version in package.json ...
 
-& $git commit -m "chore: bump version to v1.0.0"
+git commit -m "chore: bump version to v1.0.0"
 
 # 3. Merge ke main (production)
-& $git checkout main
-& $git merge --no-ff release/v1.0.0 -m "Merge release/v1.0.0 into main"
-& $git tag -a v1.0.0 -m "Release v1.0.0"
+git checkout main
+git merge --no-ff release/v1.0.0 -m "Merge release/v1.0.0 into main"
+git tag -a v1.0.0 -m "Release v1.0.0"
 
 # 4. Merge balik ke develop
-& $git checkout develop
-& $git merge --no-ff release/v1.0.0 -m "Merge release/v1.0.0 into develop"
+git checkout develop
+git merge --no-ff release/v1.0.0 -m "Merge release/v1.0.0 into develop"
 
 # 5. Hapus branch release
-& $git branch -d release/v1.0.0
+git branch -d release/v1.0.0
 ```
 
 ---
 
 ### 🔥 Hotfix (Critical Bug di Production)
 
-```powershell
+```bash
 # 1. Buat hotfix dari main
-& $git checkout -b hotfix/fix-critical-bug main
+git checkout -b hotfix/fix-critical-bug main
 
 # ... fix & commit ...
-& $git commit -m "fix: perbaiki bug kritis X"
+git commit -m "fix: perbaiki bug kritis X"
 
 # 2. Merge ke main & tag
-& $git checkout main
-& $git merge --no-ff hotfix/fix-critical-bug -m "Merge hotfix/fix-critical-bug into main"
-& $git tag -a v1.0.1 -m "Hotfix v1.0.1"
+git checkout main
+git merge --no-ff hotfix/fix-critical-bug -m "Merge hotfix/fix-critical-bug into main"
+git tag -a v1.0.1 -m "Hotfix v1.0.1"
 
 # 3. Merge ke develop juga
-& $git checkout develop
-& $git merge --no-ff hotfix/fix-critical-bug -m "Merge hotfix/fix-critical-bug into develop"
+git checkout develop
+git merge --no-ff hotfix/fix-critical-bug -m "Merge hotfix/fix-critical-bug into develop"
 
 # 4. Hapus branch hotfix
-& $git branch -d hotfix/fix-critical-bug
+git branch -d hotfix/fix-critical-bug
 ```
 
 ---
