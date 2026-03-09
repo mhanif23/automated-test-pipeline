@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Automated Test Pipeline — Calculator Demo Application" />
+  <title>Calculator — Automated Test Pipeline</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+    }
+    .card {
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1.75rem;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    label { display: block; font-size: 0.85rem; margin-bottom: 0.3rem; color: #94a3b8; }
+    input, select {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: rgba(15, 23, 42, 0.6);
+      color: #e2e8f0;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus { border-color: #38bdf8; }
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      color: #0f172a;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    button:hover { opacity: 0.9; }
+    #result {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border-radius: 8px;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      text-align: center;
+      font-size: 1.15rem;
+      font-weight: 600;
+      min-height: 3.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #result.error { border-color: rgba(248, 113, 113, 0.4); background: rgba(248, 113, 113, 0.08); color: #fca5a5; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1 id="app-title">Calculator</h1>
+    <form id="calc-form">
+      <label for="num-a">Number A</label>
+      <input id="num-a" name="a" type="number" step="any" required placeholder="Enter first number" />
+
+      <label for="num-b">Number B</label>
+      <input id="num-b" name="b" type="number" step="any" required placeholder="Enter second number" />
+
+      <label for="operation">Operation</label>
+      <select id="operation" name="operation" required>
+        <option value="add">Add (+)</option>
+        <option value="subtract">Subtract (−)</option>
+        <option value="multiply">Multiply (×)</option>
+        <option value="divide">Divide (÷)</option>
+      </select>
+
+      <button id="calculate-btn" type="submit">Calculate</button>
+    </form>
+    <div id="result" aria-live="polite"></div>
+  </main>
+
+  <script>
+    const form   = document.getElementById('calc-form');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      result.textContent = '';
+      result.classList.remove('error');
+
+      const data = {
+        a: document.getElementById('num-a').value,
+        b: document.getElementById('num-b').value,
+        operation: document.getElementById('operation').value,
+      };
+
+      try {
+        const res = await fetch('/api/calculate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json();
+
+        if (!res.ok) {
+          result.textContent = json.error || 'Something went wrong';
+          result.classList.add('error');
+        } else {
+          result.textContent = `Result: ${json.result}`;
+        }
+      } catch (err) {
+        result.textContent = 'Network error';
+        result.classList.add('error');
+      }
+    });
+  </script>
+</body>
+</html>
