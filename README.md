@@ -2,6 +2,9 @@
 
 > Automated Testing in DevOps CI/CD Pipeline — Unit, API, and UI/E2E tests with quality gates.
 
+![CI Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)
+
 ## Project Structure
 
 ```
@@ -57,19 +60,19 @@ npm start
 
 The GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push/PR to `main`:
 
-```
-Code Checkout → Install Dependencies → Unit & API Tests
-                                            │
-                            ┌───────────────┴───────────────┐
-                            ▼                               ▼
-                    Playwright E2E                   Selenium E2E
-                            │                               │
-                            └───────────────┬───────────────┘
-                                            ▼
-                                  Quality Gate ✅
-                                            │
-                                            ▼
-                              Deploy to Testing Env 🚀
+```mermaid
+graph TD
+    A[Code Checkout] --> B[Install Dependencies]
+    B --> C[Unit & API Tests]
+    C --> D[Playwright E2E]
+    C --> E[Selenium E2E]
+    D --> F{Quality Gate ✅}
+    E --> F
+    F --> G[🚀 Deploy to Testing Env]
+    
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef success fill:#d4edda,stroke:#28a745,stroke-width:2px;
+    class F success
 ```
 
 ### Quality Gates

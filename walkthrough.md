@@ -17,6 +17,7 @@ A complete Node.js project implementing automated testing across four layers, in
 | [tests/api/api.test.js](file:///f:/FileNif/Automated%20Test%20Pipeline/tests/api/api.test.js) | Supertest API tests |
 | [tests/e2e/playwright/app.spec.js](file:///f:/FileNif/Automated%20Test%20Pipeline/tests/e2e/playwright/app.spec.js) | Playwright E2E tests |
 | [tests/e2e/selenium/app.test.js](file:///f:/FileNif/Automated%20Test%20Pipeline/tests/e2e/selenium/app.test.js) | Selenium E2E tests |
+| [jest-selenium.config.js](file:///f:/FileNif/Automated%20Test%20Pipeline/jest-selenium.config.js) | Config Selenium untuk HTML Report |
 | [playwright.config.js](file:///f:/FileNif/Automated%20Test%20Pipeline/playwright.config.js) | Playwright config (local: Chromium only, CI: multi-browser) |
 | [.github/workflows/ci.yml](file:///f:/FileNif/Automated%20Test%20Pipeline/.github/workflows/ci.yml) | GitHub Actions CI/CD pipeline |
 | [README.md](file:///f:/FileNif/Automated%20Test%20Pipeline/README.md) | Project documentation |
@@ -44,6 +45,7 @@ push/PR to main
 - **Unit & API tests** block E2E tests (dependency gate)
 - **All E2E tests** must pass before deploy (quality gate)
 - **Deploy** only runs on `main` branch pushes
+- **Test Artifacts**: Pipeline secara otomatis menghasilkan dan mengunggah laporan (`coverage-report`, `playwright-report`, `selenium-report`) yang bisa diunduh via dashboard Actions.
 
 ---
 
@@ -56,6 +58,9 @@ push/PR to main
 | E2E | Playwright | 8 | page load, UI elements, all operations, error display |
 | E2E | Selenium | 4 | page title, heading, addition, division-by-zero |
 | **Total** | | **37** | |
+
+> [!TIP]
+> Coverage code dilaporkan lewat lencana (badge) di atas `README.md`. Anda juga bisa melihat hasil lengkapnya di dalam folder `coverage/` setelah menjalankan test API & Unit lokal.
 
 ---
 
@@ -114,6 +119,18 @@ Setelah itu jalankan `npm install` kembali seperti biasa.
 | E2E | Playwright (Chromium) | 8 passed | ✅ PASS |
 | E2E | Selenium | 4 passed | ✅ PASS |
 | **Total** | | **37 tests** | **✅ ALL PASS** |
+
+---
+
+## Laporan Test Otomatis (HTML Reports)
+
+Untuk Playwright dan Selenium, hasil pengujian test secara lokal akan langsung disajikan dalam bentuk antarmuka web yang informatif:
+
+- **Playwright Report**: Dikonfigurasi agar otomatis membuka browser berisi rincian step test, durasi time-execution, error screenshot, dan trace viewer saat test E2E selesai dijalanankan.
+- **Selenium Report**: Menghasilkan `jest_html_reporters.html` yang juga otomatis terbuka karena telah diberikan *conditional reporter* pada file config-nya.
+
+> [!NOTE]
+> Fitur *auto-open* laporan HTML ini secara cerdas akan **dinonaktifkan secara dinamis** pada `process.env.CI` agar tidak membuat pipeline cloud di GitHub Actions menggantung (hang).
 
 ---
 

@@ -37,6 +37,14 @@ jobs:
       - name: 🔌 Run API Tests
         run: npm run test:api
 
+      - name: 📊 Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: coverage-report-node-${{ matrix.node-version }}
+          path: coverage/
+          retention-days: 14
+
   # ───────────────────────────────────────────────
   #  Playwright E2E Tests
   # ───────────────────────────────────────────────
@@ -100,6 +108,14 @@ jobs:
 
       - name: 🌐 Run Selenium Tests
         run: npm run test:e2e:selenium
+
+      - name: 📊 Upload Selenium Report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: selenium-report
+          path: jest_html_reporters.html
+          retention-days: 14
 
   # ───────────────────────────────────────────────
   #  Quality Gate & Deploy
