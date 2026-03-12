@@ -73,3 +73,22 @@ test.describe('Calculator App', () => {
     await expect(result).toHaveClass(/error/);
   });
 });
+  test('performs modulo operation', async ({ page }) => {
+    await page.fill('#num-a', '10');
+    await page.fill('#num-b', '3');
+    await page.selectOption('#operation', 'modulo');
+    await page.click('#calculate-btn');
+
+    await expect(page.locator('#result')).toHaveText('Result: 1'); // Will fail: expects 1, gets 2
+  });
+
+  test('shows error on modulo by zero', async ({ page }) => {
+    await page.fill('#num-a', '10');
+    await page.fill('#num-b', '0');
+    await page.selectOption('#operation', 'modulo');
+    await page.click('#calculate-btn');
+
+    const result = page.locator('#result');
+    await expect(result).toHaveText('Modulo by zero is not allowed');
+    await expect(result).toHaveClass(/error/);
+  });
