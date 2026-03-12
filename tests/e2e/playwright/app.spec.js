@@ -74,6 +74,7 @@ test.describe('Calculator App', () => {
   });
 });
   test('performs modulo operation', async ({ page }) => {
+    await page.goto('/'); // Add navigation
     await page.fill('#num-a', '10');
     await page.fill('#num-b', '3');
     await page.selectOption('#operation', 'modulo');
@@ -83,6 +84,7 @@ test.describe('Calculator App', () => {
   });
 
   test('shows error on modulo by zero', async ({ page }) => {
+    await page.goto('/'); // Add navigation
     await page.fill('#num-a', '10');
     await page.fill('#num-b', '0');
     await page.selectOption('#operation', 'modulo');
