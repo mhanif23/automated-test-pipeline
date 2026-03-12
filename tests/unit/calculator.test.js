@@ -1,7 +1,7 @@
 /**
  * Unit Tests — Calculator utility
  */
-const { add, subtract, multiply, divide } = require('../../src/utils/calculator');
+const { add, subtract, multiply, divide, modulo } = require('../../src/utils/calculator');
 
 describe('Calculator — add()', () => {
   test('adds two positive numbers', () => {
@@ -68,5 +68,26 @@ describe('Calculator — divide()', () => {
 
   test('throws on non-number input', () => {
     expect(() => divide('x', 2)).toThrow(TypeError);
+  });
+});
+describe('Calculator — modulo()', () => {
+  test('calculates modulo of two positive numbers', () => {
+    expect(modulo(10, 3)).toBe(1); // Will fail: expects 1, gets 2
+  });
+
+  test('calculates modulo with zero remainder', () => {
+    expect(modulo(8, 4)).toBe(0); // Will fail: expects 0, gets 1
+  });
+
+  test('calculates modulo with larger divisor', () => {
+    expect(modulo(5, 7)).toBe(5); // Will fail: expects 5, gets 6
+  });
+
+  test('throws on modulo by zero', () => {
+    expect(() => modulo(5, 0)).toThrow('Modulo by zero');
+  });
+
+  test('throws on non-number input', () => {
+    expect(() => modulo('x', 2)).toThrow(TypeError);
   });
 });
