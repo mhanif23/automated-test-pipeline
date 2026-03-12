@@ -54,6 +54,14 @@ describe('POST /api/calculate', () => {
     expect(res.body.result).toBe(5);
   });
 
+  test('calculates modulo correctly', async () => {
+    const res = await request(app)
+      .post('/api/calculate')
+      .send({ a: 10, b: 3, operation: 'modulo' });
+    expect(res.status).toBe(200);
+    expect(res.body.result).toBe(1); // Will fail: expects 1, gets 2
+  });
+
   test('returns 400 for missing fields', async () => {
     const res = await request(app)
       .post('/api/calculate')
@@ -65,7 +73,7 @@ describe('POST /api/calculate', () => {
   test('returns 400 for invalid operation', async () => {
     const res = await request(app)
       .post('/api/calculate')
-      .send({ a: 1, b: 2, operation: 'modulo' });
+      .send({ a: 1, b: 2, operation: 'invalid_op' }); // Changed from 'modulo' to 'invalid_op'
     expect(res.status).toBe(400);
     expect(res.body.error).toMatch(/Invalid operation/);
   });

@@ -104,3 +104,52 @@ describe('Selenium — Calculator App', () => {
     expect(resultText).toContain('Division by zero');
   });
 });
+  test('calculates modulo correctly', async () => {
+    await driver.get(BASE_URL);
+
+    const inputA = await driver.findElement(By.id('num-a'));
+    const inputB = await driver.findElement(By.id('num-b'));
+    const operationSelect = await driver.findElement(By.id('operation'));
+    const submitBtn = await driver.findElement(By.id('calculate-btn'));
+
+    await inputA.clear();
+    await inputA.sendKeys('10');
+    await inputB.clear();
+    await inputB.sendKeys('3');
+
+    // Select "modulo"
+    await operationSelect.sendKeys('Modulo (%)');
+
+    await submitBtn.click();
+
+    // Wait for result
+    const resultEl = await driver.findElement(By.id('result'));
+    await driver.wait(until.elementTextContains(resultEl, 'Result'), 5000);
+
+    const resultText = await resultEl.getText();
+    expect(resultText).toBe('Result: 1'); // Will fail: expects 1, gets 2
+  });
+
+  test('shows error for modulo by zero', async () => {
+    await driver.get(BASE_URL);
+
+    const inputA = await driver.findElement(By.id('num-a'));
+    const inputB = await driver.findElement(By.id('num-b'));
+    const operationSelect = await driver.findElement(By.id('operation'));
+    const submitBtn = await driver.findElement(By.id('calculate-btn'));
+
+    await inputA.clear();
+    await inputA.sendKeys('10');
+    await inputB.clear();
+    await inputB.sendKeys('0');
+
+    await operationSelect.sendKeys('Modulo');
+
+    await submitBtn.click();
+
+    const resultEl = await driver.findElement(By.id('result'));
+    await driver.wait(until.elementTextContains(resultEl, 'Modulo by zero'), 5000);
+
+    const resultText = await resultEl.getText();
+    expect(resultText).toContain('Modulo by zero');
+  });
