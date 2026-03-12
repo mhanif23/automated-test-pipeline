@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { add, subtract, multiply, divide } = require('./utils/calculator');
+const { add, subtract, multiply, divide, modulo } = require('./utils/calculator');
 
 const app = express();
 
@@ -31,12 +31,12 @@ app.post('/api/calculate', (req, res) => {
     return res.status(400).json({ error: 'a and b must be valid numbers' });
   }
 
-  const operations = { add, subtract, multiply, divide };
+  const operations = { add, subtract, multiply, divide, modulo };
   const fn = operations[operation];
 
   if (!fn) {
     return res.status(400).json({
-      error: `Invalid operation: "${operation}". Allowed: add, subtract, multiply, divide`,
+      error: `Invalid operation: "${operation}". Allowed: add, subtract, multiply, divide, modulo`,
     });
   }
 
